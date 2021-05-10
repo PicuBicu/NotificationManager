@@ -15,8 +15,11 @@ public class Server {
         Server example = new Server();
         try {
             System.out.println("Oczekiwanie na pierwszego klienta");
-            example.startServer(PORT);
-            example.runServer();
+            if (example.startServer(PORT) == null) {
+                System.out.println("Nie udało się utworzyc polaczenia");
+            } else {
+                example.runServer();
+            }
         } finally {
             System.out.println("Serwer wyłączony");
             example.closeServer();
@@ -27,7 +30,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            serverSocket = null;
         }
         return serverSocket;
     }
@@ -47,7 +50,6 @@ public class Server {
                 isRunning = false;
             } catch (IOException e) {
                 System.err.println("Bład w trakcie tworzenia połączenia");
-                isRunning = false;
             }
         }
     }

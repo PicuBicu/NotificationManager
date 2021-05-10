@@ -14,7 +14,7 @@ public class ClientHandler extends Thread {
     private final Timer timer;
 
     public ClientHandler(Socket clientSocket) throws IOException {
-        this.timer = new Timer();
+        timer = new Timer();
         this.clientSocket = clientSocket;
         connInput = new ObjectInputStream(clientSocket.getInputStream());
         connOutput = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -40,14 +40,13 @@ public class ClientHandler extends Thread {
                     @Override
                     public void run() {
                         try {
-                            System.out.println("XDD");
                             sendNotification(notification);
                         } catch (IOException e) {
                             System.out.println("Wystapił bład w trakcie wysyłania powiadomienia");
                         }
                     }
                 };
-                System.out.println("Data-> " + notification.getDate());
+                System.out.println("Data -> " + notification.getDate());
                 timer.schedule(task, notification.getDate());
             } catch (IOException e) {
                 System.out.println("Klient się rozłączył");
@@ -59,7 +58,7 @@ public class ClientHandler extends Thread {
         }
         close();
     }
-
+    
     public void close() {
         try {
             connInput.close();

@@ -8,13 +8,13 @@ import java.net.Socket;
 
 public class Receiver extends Thread {
 
-    private ObjectInputStream connInput;
+    private final ObjectInputStream connInput;
 
     public Receiver(Socket clientSocket) throws IOException {
         connInput = new ObjectInputStream(clientSocket.getInputStream());
     }
 
-    public Notification receiveMessage() throws IOException, ClassNotFoundException {
+    private Notification receiveMessage() throws IOException, ClassNotFoundException {
         return (Notification)connInput.readObject();
     }
 
@@ -25,14 +25,15 @@ public class Receiver extends Thread {
             try {
                 Notification notification = receiveMessage();
                 if (notification != null)
-                    System.out.println(notification.getMessage());
+                    System.out.print("\n" + notification.getMessage() + "\nPodaj treść wiadomości: ");
             } catch (IOException e) {
                 isRunning = false;
-                System.out.println("Bład w trakcie wysyłania");
             } catch (ClassNotFoundException e) {
+                isRunning = false;
                 System.out.println("Podana klasa nie została odnaleziona");
             }
         }
+        System.out.println("\nWatek sie zakonczył");
         close();
     }
 
